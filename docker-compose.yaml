@@ -10,8 +10,25 @@ services:
       context: .
       dockerfile: ./apps/reservations/Dockerfile
       target: development
+    env_file:
+      - ./apps/reservations/.env
     command: pnpm run start:dev reservations
     ports:
-      - '3000:3000'
+      - '8992:8992'
+    volumes:
+      - .:/usr/src/app
+
+  auth:
+    depends_on:
+      - mongo
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    ports:
+      - '8991:8991'
     volumes:
       - .:/usr/src/app
